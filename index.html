@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div id="city"></div>
+            <div id="country"></div>
+            <div id="date"></div>
+        </header>
+        <div class="main">
+            <div class="main__primary-wrap">
+                <div id="icon"></div>
+                <div id="condition"></div>
+            </div>
+            <div class="main__secondary-wrap">
+                <div class="main-secondary-wrap__item main__temp"><span id="temp"></span>&deg;</div>
+                <div class="main-secondary-wrap__item">Feelslike: <span id="feelslike"></span>&deg;</div>    
+                <div class="main-secondary-wrap__item">Humidity: <span id="humidity"></span>%</div>
+            </div>
+        </div>
+    </div>
+    <script>        
+        const requestURL = 'https://api.weatherapi.com/v1/current.json?key=b677082ac19f45aca07212645220401&q=Kiev&aqi=no';
+        function fetch() { 
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {                
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', requestURL);
+                xhr.onreadystatechange = function() {
+                if (xhr.readyState !== 4 || xhr.status !== 200) {
+                    return;
+                }
+                const response = JSON.parse(xhr.response);                
+                resolve(response);
+                }
+                xhr.send();                
+              }, 300);
+            });
+        };
+
+        fetch().then((data) => {            
+            document.getElementById('city').innerHTML = data.location.name;
+            document.getElementById('country').innerHTML = data.location.country;
+            document.getElementById('date').innerHTML = data.location.localtime;
+            document.getElementById('condition').innerHTML = data.current.condition.text;
+            const image = data.current.condition.icon;
+            document.getElementById('icon').innerHTML = `<img src="http://${image}">`;
+            document.getElementById('temp').innerHTML = data.current.temp_c;
+            document.getElementById('feelslike').innerHTML = data.current.feelslike_c;
+            document.getElementById('humidity').innerHTML = data.current.humidity;         
+            });       
+
+        // const requestURL = 'https://api.weatherapi.com/v1/current.json?key=b677082ac19f45aca07212645220401&q=Kiev&aqi=no';
+        // const xhr = new XMLHttpRequest();
+        // xhr.open('GET', requestURL);
+        // xhr.onreadystatechange = function() {
+        // if (xhr.readyState !== 4 || xhr.status !== 200) {
+        //     return;
+        // }
+        // const response = JSON.parse(xhr.response);
+        // console.log(response.location.name);
+        // }
+        // xhr.send();
+
+        // const promise1 = new Promise((resolve, reject) => {
+        // setTimeout(() => {
+        //     resolve('foo');
+        // }, 300);
+        // });
+        // promise1.then((data) => {console.log(data);});
+    </script>
+</body>
+</html>
