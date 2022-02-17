@@ -44,16 +44,27 @@
             });
         };
 
-        fetch().then((data) => {            
-            document.getElementById('city').innerHTML = data.location.name;
-            document.getElementById('country').innerHTML = data.location.country;
-            document.getElementById('date').innerHTML = data.location.localtime;
-            document.getElementById('condition').innerHTML = data.current.condition.text;
-            const image = data.current.condition.icon;
+        fetch().then((data) => {        
+            let { city, country, date, condition, pic, temp, feelslike, humidity } = {
+                city: data.location.name,
+                country: data.location.country,
+                date: data.location.localtime,
+                condition: data.current.condition.text,
+                pic: data.current.condition.icon,
+                temp: data.current.temp_c,
+                feelslike: data.current.feelslike_c,
+                humidity: data.current.humidity
+            };
+            
+            document.getElementById('city').innerHTML = city;
+            document.getElementById('country').innerHTML = country;
+            document.getElementById('date').innerHTML = date;
+            document.getElementById('condition').innerHTML = condition;
+            const image = pic;
             document.getElementById('icon').innerHTML = `<img src="http://${image}">`;
-            document.getElementById('temp').innerHTML = data.current.temp_c;
-            document.getElementById('feelslike').innerHTML = data.current.feelslike_c;
-            document.getElementById('humidity').innerHTML = data.current.humidity;         
+            document.getElementById('temp').innerHTML = temp;
+            document.getElementById('feelslike').innerHTML = feelslike;
+            document.getElementById('humidity').innerHTML = humidity;         
             });       
 
         // const requestURL = 'https://api.weatherapi.com/v1/current.json?key=b677082ac19f45aca07212645220401&q=Kiev&aqi=no';
